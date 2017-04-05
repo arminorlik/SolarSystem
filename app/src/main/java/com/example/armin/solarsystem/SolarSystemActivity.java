@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -84,7 +85,14 @@ public class SolarSystemActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_planets) {
-            // Handle the camera action
+
+            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(new SolarObject[]{
+                    new SolarObject("Earth"),
+                    new SolarObject("Mars")});
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.containerLayout, fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_moons) {
 
         } else if (id == R.id.nav_other) {
