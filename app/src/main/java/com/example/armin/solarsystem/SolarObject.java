@@ -30,9 +30,9 @@ public class SolarObject implements Serializable {
         image = String.format("images/%s.jpg", name.toLowerCase());
         text = String.format("texts/&s.jpg", name.toLowerCase());
         video = jsonObject.optString("video");
-        moons1 = jsonObject.optJSONArray("moons");
-        if (moons1 != null){
-            moons = getSolarObjectsFromJsonArray(moons1);
+        JSONArray moons = jsonObject.optJSONArray("moons");
+        if(moons != null) {
+            this.moons = getSolarObjectsFromJsonArray(moons);
         }
 
 
@@ -94,7 +94,7 @@ public class SolarObject implements Serializable {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray(type);
 
-            SolarObject[] solarObjects = getSolarObjectsFromJsonArray(jsonArray);
+
 
             return getSolarObjectsFromJsonArray(jsonArray);
 

@@ -113,13 +113,13 @@ public class SolarSystemActivity extends AppCompatActivity
 
         if (id == R.id.nav_planets) {
 
-            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(planets);
+            SolarObjectsFragment fragment = SolarObjectsFragment.newInstance(planets);
 
             replaceFragment(fragment);
         } else if (id == R.id.nav_moons) {
 
         } else if (id == R.id.nav_other) {
-            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(others);
+            SolarObjectsFragment fragment = SolarObjectsFragment.newInstance(others);
 
             replaceFragment(fragment);
 
