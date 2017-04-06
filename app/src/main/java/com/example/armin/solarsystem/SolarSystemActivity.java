@@ -14,8 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class SolarSystemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SolarObject[] planets;
+    private SolarObject[] others;
+    private SolarObject[] objectsWithMoons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,27 @@ public class SolarSystemActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        planets = SolarObject.loadArrayFromJson(this, "planets");
+        others = SolarObject.loadArrayFromJson(this, "others");
+
+        ArrayList<SolarObject> arrayList= new ArrayList<>();
+
+        for (SolarObject planet : planets) {
+            if (planet.hasMoon()){
+                arrayList.add(planet);
+            }
+        }
+
+        for (SolarObject other : others) {
+            if (other.hasMoon()){
+                arrayList.add(other);
+            }
+        }
+
+        objectsWithMoons = new SolarObject[arrayList.size()];
+        objectsWithMoons = arrayList.toArray(objectsWithMoons);
+
 
         navigationView.setCheckedItem(R.id.nav_planets);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_planets)); //domyślnie zaznaczona pierwsza opcja w nav
@@ -86,20 +113,25 @@ public class SolarSystemActivity extends AppCompatActivity
 
         if (id == R.id.nav_planets) {
 
-            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(new SolarObject[]{
-                    new SolarObject("Earth"),
-                    new SolarObject("Mars")});
+            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(planets);
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.containerLayout, fragment);
-            fragmentTransaction.commit();
+            replaceFragment(fragment);
         } else if (id == R.id.nav_moons) {
 
         } else if (id == R.id.nav_other) {
+            SolarObjectsFragment fragment = new SolarObjectsFragment().newInstance(others);
+
+            replaceFragment(fragment);
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void replaceFragment(SolarObjectsFragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.containerLayout, fragment);
+        fragmentTransaction.commit();
     }
 }
