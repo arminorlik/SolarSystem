@@ -3,10 +3,15 @@ package com.example.armin.solarsystem;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +19,9 @@ import android.widget.TextView;
 public class SolarObjectsFragment extends Fragment {
 
     public static final String OBJECTS_KEY = "objects";
+    @BindView(R.id.recycleView)
+    RecyclerView recycleView;
+    Unbinder unbinder;
 
     public SolarObjectsFragment() {
         // Required empty public constructor
@@ -23,18 +31,19 @@ public class SolarObjectsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_solar_objects, container, false);
+        View view = inflater.inflate(R.layout.fragment_solar_objects, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView textView = (TextView) view.findViewById(R.id.object_textView);
+
         SolarObject[] objects = (SolarObject[]) getArguments().getSerializable(OBJECTS_KEY);
 
-        for (SolarObject object : objects) {
-            textView.setText(textView.getText().toString() + object.getName());
-        }
+        recycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2)); //ustawienie layout managera i grid o dwóch kolumnach
+        recycleView.setAdapter(new SolarObjectAdapter(objects));
     }
 
     public static SolarObjectsFragment newInstance(SolarObject[] objects) {
@@ -44,5 +53,11 @@ public class SolarObjectsFragment extends Fragment {
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
