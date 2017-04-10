@@ -28,7 +28,7 @@ public class SolarObject implements Serializable {
     public SolarObject(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");
         image = String.format("images/%s.jpg", name.toLowerCase());
-        text = String.format("texts/&s.jpg", name.toLowerCase());
+        text = String.format("texts/%s.txt", name.toLowerCase());
         video = jsonObject.optString("video");
         JSONArray moons = jsonObject.optJSONArray("moons");
         if(moons != null) {
@@ -130,5 +130,10 @@ public class SolarObject implements Serializable {
 
     public boolean hasMoon() {
         return moons != null && moons.length > 0;
+    }
+
+    public String getImagePath() {
+        return String.format("file:///android_asset/%s", getImage());
+
     }
 }

@@ -81,7 +81,7 @@ public class SolarObjectAdapter extends RecyclerView.Adapter<SolarObjectAdapter.
 
             itemText.setText(solarObject.getName());
             Glide.with(itemImage.getContext())
-                    .load("file:///android_asset/" + solarObject.getImage())
+                    .load(solarObject.getImagePath())
                     .placeholder(R.drawable.planet_placeholder)
                     .fitCenter()
                     .into(itemImage);
